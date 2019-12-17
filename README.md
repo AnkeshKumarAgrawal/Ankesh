@@ -1,17 +1,4 @@
-# Ankesh
-## -*- coding: utf-8 -*-
-#"""
-#Created on Thu Nov 28 11:18:43 2019
-#
-#@author: Ank
-#"""
-#
-## -*- coding: utf-8 -*-
-#"""
-#Created on Sun Nov 24 10:02:48 2019
-#
-#@author: Ank
-#"""
+
 #
 # To work with data frames
 import pandas as pd
@@ -48,10 +35,7 @@ print(np.unique(data['time_from_anchor']))
 print(np.unique(data['Event_name']))
 print(np.unique(data['lab_result_numeric']))
 
-
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 ## Exploratory data analysis
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 #1. Getting to know the data
 #2. Data preprocessing (Missing values)
@@ -60,9 +44,8 @@ print(np.unique(data['lab_result_numeric']))
 # Checking variables data types
 print(data.info())
 
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 ## Data pre-processing 
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 # To check any missing values
 print(data.isnull().sum())
@@ -77,9 +60,7 @@ data1.dropna(axis=1,inplace=True)
 # Removing Duplicate records
 data1.drop_duplicates(keep='first',inplace=True)
 
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 ## Working with data1 values
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 # Seperating diseased and healthy person
 data1_disease=data1[data1['y_flag']==1]
@@ -103,10 +84,9 @@ print(healthy_patient)
 
 # Number of unique test for patient
 test=list(np.unique(data1['Event_name']))
-#
-## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
 ## Working with diseased patient
-## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #
 ## Empty cell
 final_diseased=np.empty((len(diseased_patient),2*len(test)))
@@ -142,9 +122,7 @@ for j in range(len(diseased_patient)):
             final_diseased[j,(2*k)],final_diseased[j,(2*k+1)]=b0,b1
  
 
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Working with healthy patient
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 # Empty cell
 final_healthy=np.empty((len(healthy_patient),2*len(test)))
@@ -221,31 +199,19 @@ while (m<1202):
        final_healthy[m].fillna(a4[0],inplace=True)
        m=m+1
 
-
-
-## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Adding y_flag in Diseased data            
-## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 y_flag=pd.DataFrame(np.zeros(len(final_diseased)))
 diseased=np.concatenate((final_diseased,y_flag),axis=1)
 
-
-## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Adding y_flag in Diseased data            
-## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 y_flag=pd.DataFrame(np.ones(len(final_healthy)))
 healthy=np.concatenate((final_healthy,y_flag),axis=1)
 
-
-## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Concatenating diseased and healthy patient            
 ## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 patient_total=pd.DataFrame(np.concatenate((diseased,healthy),axis=0))
 
-
-## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Removing columns having null values           
-## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 
 m=0
 col_nan=[]
 while (m<len(patient_total.columns)):
@@ -257,10 +223,7 @@ while (m<len(patient_total.columns)):
 
 patient_total.drop(col_nan,axis=1,inplace=True) 
 
-
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Seperating input and output
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 # Columns of patient_total1
 col_p=list(patient_total.columns)
@@ -289,10 +252,7 @@ for i in range(173):
     patient_final=patient_final[patient_final[i]<1]
     patient_final=patient_final[patient_final[i]>-1]
 
-
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Seperating input and output
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@s
     
 # Columns of patient_total1
 col_p=list(patient_final.columns)
@@ -309,18 +269,11 @@ features=list(set(col_p)-set([col_p1]))
 # Input data
 x=pd.DataFrame(patient_final[features].values)
            
-
-#### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 ## Splitting the data into train and test
-#### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 
-#
 train_x,test_x,train_y,test_y=train_test_split(x,y,test_size=0.3,random_state=0)  
 
 
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Logistic Regression
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 
-
 
 # Make an instance of the model
 logistic=LogisticRegression()
@@ -337,10 +290,8 @@ logistic.intercept_
 # Prediction from test data
 prediction=pd.DataFrame(logistic.predict(test_x)) 
 
-## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 ## Performance of model
-## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-#
+
 # Confusion matrix
 from sklearn.metrics import confusion_matrix
 print(confusion_matrix(test_y,prediction))
@@ -349,11 +300,7 @@ print(confusion_matrix(test_y,prediction))
 from sklearn.metrics import accuracy_score
 print(accuracy_score(test_y,prediction))
 
-
-
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Desining KNN model
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 # importing the library of KNN
 from sklearn.neighbors import KNeighborsClassifier
